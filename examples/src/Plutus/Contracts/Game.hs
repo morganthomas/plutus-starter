@@ -86,7 +86,10 @@ validateGuess hs cs _ = isGoodGuess hs cs
 
 {-# INLINABLE isGoodGuess #-}
 isGoodGuess :: HashedString -> ClearString -> Bool
-isGoodGuess (HashedString actual) (ClearString guess') = actual == sha2_256 guess'
+isGoodGuess (HashedString actual) (ClearString guess') = go 5
+  where go :: Integer -> Bool
+        go 1 = actual == sha2_256 guess'
+        go n = go (n-1)
 
 -- | The validator script of the game.
 gameValidator :: Validator
